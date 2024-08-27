@@ -1,0 +1,66 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Frontend dependencies
+frontend/node_modules/
+frontend/build/
+
+# Backend dependencies
+backend/node_modules/
+backend/build/
+
+# Requirements files
+frontend/requirements.txt
+backend/requirements.txt
+
+# VS Code settings
+.vscode/
