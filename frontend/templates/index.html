@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .task {
+            margin-bottom: 10px;
+        }
+        .task-title {
+            font-weight: bold;
+        }
+        .task-actions {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Task List</h1>
+    <ul>
+        {% for task in tasks %}
+            <li class="task">
+                <span class="task-title">{{ task.title }}</span>: {{ task.description }}
+                <span class="task-actions">
+                    <a href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a>
+                    <a href="{{ url_for('delete_task', task_id=task.id) }}">Delete</a>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('add_task') }}">Add Task</a>
+</body>
+</html>

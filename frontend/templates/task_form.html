@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% if task %}Edit Task{% else %}Add Task{% endif %}</h1>
+<form method="POST">
+    <input type="text" name="task" value="{{ task }}" required>
+    <button type="submit">{% if task %}Update{% else %}Add{% endif %}</button>
+</form>
+<a href="{{ url_for('index') }}">Back to Task List</a>
+{% endblock %}
