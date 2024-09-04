@@ -10,8 +10,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Stop the current containers
-docker-compose down
+# Stop and remove any existing containers
+docker-compose down --remove-orphans
 
 # Start the new containers
 docker-compose up -d
