@@ -14,7 +14,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://user:password@db:5432/tasks_db  
 
@@ -43,6 +44,11 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d tasks_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   prometheus:
     image: prom/prometheus:latest
