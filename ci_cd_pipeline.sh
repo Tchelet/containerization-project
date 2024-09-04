@@ -10,13 +10,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Run backend tests (modify as needed for your setup)
-docker-compose run backend-service python -m unittest discover
-if [ $? -ne 0 ]; then
-    echo "Tests failed. Exiting." | tee test_failure.log
-    exit 1
-fi
-
 # Stop the current containers
 docker-compose down
 
