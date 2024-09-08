@@ -6,6 +6,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      args:
+        VERSION: ${VERSION}
+    image: your-dockerhub-username/containerization-project-backend:${VERSION}
     volumes:
       - ./backend:/app
     ports:
@@ -14,7 +17,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://user:password@db:5432/tasks_db  
 
@@ -23,6 +27,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VERSION: ${VERSION}
+    image: your-dockerhub-username/containerization-project-frontend:${VERSION}
     volumes:
       - ./frontend:/app
     ports:
@@ -43,6 +50,11 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d tasks_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   prometheus:
     image: prom/prometheus:latest
