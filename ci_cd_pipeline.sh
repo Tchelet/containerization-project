@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Ensure the VERSION file exists
+if [ ! -f VERSION ]; then
+    echo "1.0.0" > VERSION
+fi
+
 # Load the current version from the VERSION file
 VERSION=$(cat VERSION)
 
