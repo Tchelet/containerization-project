@@ -26,6 +26,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/app
+      #to do - add tags to the image
+      #major/minor/patch methods for release
+      #git tags / git flows (dev->release-candidate->master) * depends on the type of company you work in (fast TTM, git flow, etc)
+      
     ports:
       - "8000:8000"
     command: ["python", "app.py"]

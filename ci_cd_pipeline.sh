@@ -1,14 +1,28 @@
 #!/bin/bash
 
+# Load the current version from the VERSION file
+VERSION=$(cat VERSION)
+
+# Define the Docker image name
+IMAGE_NAME="your-dockerhub-username/containerization-project"
+
 # Pull the latest changes from the repo
 git pull origin main
 
-# Build the containers
-docker-compose build
+# Build the containers with the current version tag
+docker-compose build --build-arg VERSION=$VERSION
 if [ $? -ne 0 ]; then
     echo "Build failed. Exiting." | tee build_failure.log
     exit 1
 fi
+
+# Tag the images for the dev environment
+docker tag $IMAGE_NAME:backend $IMAGE_NAME:backend-dev
+docker tag $IMAGE_NAME:frontend $IMAGE_NAME:frontend-dev
+
+# Push the images to Docker Hub for the dev environment
+docker push $IMAGE_NAME:backend-dev
+docker push $IMAGE_NAME:frontend-dev
 
 # Stop and remove any existing containers
 docker-compose down --remove-orphans
@@ -24,4 +38,30 @@ fi
 curl -f http://localhost:8000/ || echo "Frontend health check failed." >> health_check.log
 curl -f http://localhost:5000/ || echo "Backend health check failed." >> health_check.log
 
-echo "CI/CD process completed successfully."
+# If health checks pass, tag the images for the prod environment
+if [ ! -s health_check.log ]; then
+    docker tag $IMAGE_NAME:backend $IMAGE_NAME:backend-prod
+    docker tag $IMAGE_NAME:frontend $IMAGE_NAME:frontend-prod
+
+    # Push the images to Docker Hub for the prod environment
+    docker push $IMAGE_NAME:backend-prod
+    docker push $IMAGE_NAME:frontend-prod
+
+    # Increment the version number (simple example, you might want to use a more sophisticated versioning strategy)
+    IFS='.' read -r -a VERSION_PARTS <<< "$VERSION"
+    VERSION_PARTS[2]=$((VERSION_PARTS[2] + 1))
+    NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}"
+
+    # Update the VERSION file with the new version
+    echo $NEW_VERSION > VERSION
+
+    # Commit the new version to the repository
+    git add VERSION
+    git commit -m "Bump version to $NEW_VERSION"
+    git push origin main
+
+    echo "CI/CD process completed successfully. New version is $NEW_VERSION."
+else
+    echo "Health checks failed. Check health_check.log for details."
+    exit 1
+fi
