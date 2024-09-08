@@ -6,11 +6,14 @@ VERSION=$(cat VERSION)
 # Define the Docker image name
 IMAGE_NAME="your-dockerhub-username/containerization-project"
 
+# Export the VERSION variable so it can be used by docker-compose
+export VERSION
+
 # Pull the latest changes from the repo
 git pull origin main
 
 # Build the containers with the current version tag
-docker-compose build --build-arg VERSION=$VERSION
+docker-compose build
 if [ $? -ne 0 ]; then
     echo "Build failed. Exiting." | tee build_failure.log
     exit 1
