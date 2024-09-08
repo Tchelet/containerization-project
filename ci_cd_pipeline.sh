@@ -4,8 +4,8 @@
 set -e
 
 # Variables
-REPO_URL="https://github.com/yourusername/your-repo.git"
-PROJECT_DIR="your-repo"
+REPO_URL="https://github.com/Tchelet/containerization-project.git"
+PROJECT_DIR="containerization-project"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 VERSION=$(cat VERSION)
 
@@ -20,8 +20,8 @@ docker-compose -f $DOCKER_COMPOSE_FILE build --build-arg VERSION=$VERSION
 
 # Tag the images
 echo "Tagging Docker images..."
-docker tag your-dockerhub-username/containerization-project-backend:latest your-dockerhub-username/containerization-project-backend:$VERSION
-docker tag your-dockerhub-username/containerization-project-frontend:latest your-dockerhub-username/containerization-project-frontend:$VERSION
+docker tag tchelet/containerization-project-backend:latest your-dockerhub-username/containerization-project-backend:$VERSION
+docker tag tchelet/containerization-project-frontend:latest your-dockerhub-username/containerization-project-frontend:$VERSION
 
 # Run tests (assuming you have a test script or command)
 echo "Running tests..."
