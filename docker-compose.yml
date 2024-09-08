@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
       args:
         VERSION: ${VERSION}
-    image: your-dockerhub-username/containerization-project-backend:${VERSION}
+    image: tchelet/containerization-project-backend:${VERSION}
     volumes:
       - ./backend:/app
     ports:
@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile
       args:
         VERSION: ${VERSION}
-    image: your-dockerhub-username/containerization-project-frontend:${VERSION}
+    image: tchelet/containerization-project-frontend:${VERSION}
     volumes:
       - ./frontend:/app
       #to do - add tags to the image

@@ -20,14 +20,8 @@ docker-compose -f $DOCKER_COMPOSE_FILE build --build-arg VERSION=$VERSION
 
 # Tag the images
 echo "Tagging Docker images..."
-docker tag tchelet/containerization-project-backend:latest your-dockerhub-username/containerization-project-backend:$VERSION
-docker tag tchelet/containerization-project-frontend:latest your-dockerhub-username/containerization-project-frontend:$VERSION
-
-# Run tests (assuming you have a test script or command)
-echo "Running tests..."
-# Example: docker-compose -f $DOCKER_COMPOSE_FILE run backend pytest
-# Replace with your actual test command
-docker-compose -f $DOCKER_COMPOSE_FILE run backend pytest
+docker tag tchelet/containerization-project-backend:latest tchelet/containerization-project-backend:$VERSION
+docker tag tchelet/containerization-project-frontend:latest tchelet/containerization-project-frontend:$VERSION
 
 # Deploy the application
 echo "Deploying application..."
