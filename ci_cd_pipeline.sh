@@ -17,12 +17,12 @@ if [ $? -ne 0 ]; then
 fi
 
 # Tag the images for the dev environment
-docker tag $IMAGE_NAME:backend $IMAGE_NAME:backend-dev
-docker tag $IMAGE_NAME:frontend $IMAGE_NAME:frontend-dev
+docker tag $IMAGE_NAME-backend:$VERSION $IMAGE_NAME-backend:dev
+docker tag $IMAGE_NAME-frontend:$VERSION $IMAGE_NAME-frontend:dev
 
 # Push the images to Docker Hub for the dev environment
-docker push $IMAGE_NAME:backend-dev
-docker push $IMAGE_NAME:frontend-dev
+docker push $IMAGE_NAME-backend:dev
+docker push $IMAGE_NAME-frontend:dev
 
 # Stop and remove any existing containers
 docker-compose down --remove-orphans
@@ -40,12 +40,12 @@ curl -f http://localhost:5000/ || echo "Backend health check failed." >> health_
 
 # If health checks pass, tag the images for the prod environment
 if [ ! -s health_check.log ]; then
-    docker tag $IMAGE_NAME:backend $IMAGE_NAME:backend-prod
-    docker tag $IMAGE_NAME:frontend $IMAGE_NAME:frontend-prod
+    docker tag $IMAGE_NAME-backend:$VERSION $IMAGE_NAME-backend:prod
+    docker tag $IMAGE_NAME-frontend:$VERSION $IMAGE_NAME-frontend:prod
 
     # Push the images to Docker Hub for the prod environment
-    docker push $IMAGE_NAME:backend-prod
-    docker push $IMAGE_NAME:frontend-prod
+    docker push $IMAGE_NAME-backend:prod
+    docker push $IMAGE_NAME-frontend:prod
 
     # Increment the version number (simple example, you might want to use a more sophisticated versioning strategy)
     IFS='.' read -r -a VERSION_PARTS <<< "$VERSION"
