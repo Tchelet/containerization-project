@@ -4,7 +4,7 @@
 set -e
 
 # Variables
-REPO_URL="https://github.com/Tchelet/containerization-project.git"
+REPO_URL="https://github.com/tchelet/containerization-project.git"
 PROJECT_DIR="ci-cd-containerization-project"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 VERSION=$(cat VERSION)
