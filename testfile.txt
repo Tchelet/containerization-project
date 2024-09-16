@@ -1,1 +1,7 @@
-this is a test file.
+gilt@MacBook-Pro containerization-project % git remote -v
+origin  git@github.com-private:tchelet/containerization-project.git (fetch)
+origin  git@github.com-private:tchelet/containerization-project.git (push)
+gilt@MacBook-Pro containerization-project % ssh-add ~/.ssh/id_ed25519_private
+Enter passphrase for /Users/gilt/.ssh/id_ed25519_private: 
+Bad passphrase, try again for /Users/gilt/.ssh/id_ed25519_private: 
+Identity added: /Users/gilt/.ssh/id_ed25519_private (tchelet@gmail.com)
