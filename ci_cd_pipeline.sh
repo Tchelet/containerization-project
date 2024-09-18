@@ -3,37 +3,44 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Variables
-REPO_URL="https://github.com/Tchelet/containerization-project.git"
-PROJECT_DIR="ci-cd-containerization-project"
-DOCKER_COMPOSE_FILE="docker-compose.yml"
-VERSION=$(cat VERSION)
+# Get the directory of the script
+SCRIPT_DIR=$(dirname "$0")
 
-# Clone the repository
-echo "Cloning repository..."
-git clone $REPO_URL
-cd $PROJECT_DIR
+# Variables
+DOCKER_COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
+
+# Check if VERSION file exists and is not empty
+if [[ ! -f "$SCRIPT_DIR/VERSION" || ! -s "$SCRIPT_DIR/VERSION" ]]; then
+  echo "VERSION file is missing or empty. Please create a VERSION file with a valid version string."
+  exit 1
+fi
+
+# Read the VERSION file
+VERSION=$(cat "$SCRIPT_DIR/VERSION")
+echo "VERSION: $VERSION"
+
+# Export the VERSION variable so it is available to docker-compose
+export VERSION
 
 # Build the Docker images with semantic versioning tags
 echo "Building Docker images..."
-docker-compose -f $DOCKER_COMPOSE_FILE build --build-arg VERSION=$VERSION
+VERSION=$VERSION docker-compose -f "$DOCKER_COMPOSE_FILE" build
 
-# Tag the images
+# Tag the images with the version
 echo "Tagging Docker images..."
-docker tag tchelet/containerization-project-backend:latest tchelet/containerization-project-backend:$VERSION
-docker tag tchelet/containerization-project-frontend:latest tchelet/containerization-project-frontend:$VERSION
+docker tag tchelet/containerization-project-backend:$VERSION tchelet/containerization-project-backend:$VERSION
+docker tag tchelet/containerization-project-frontend:$VERSION tchelet/containerization-project-frontend:$VERSION
 
 # Deploy the application
 echo "Deploying application..."
-docker-compose -f $DOCKER_COMPOSE_FILE up -d
+VERSION=$VERSION docker-compose -f "$DOCKER_COMPOSE_FILE" up -d
 
 # Monitor the services
 echo "Monitoring services..."
-docker-compose -f $DOCKER_COMPOSE_FILE ps
+docker-compose -f "$DOCKER_COMPOSE_FILE" ps
 
 # Cleanup
 echo "Cleaning up..."
-cd ..
-rm -rf $PROJECT_DIR
+rm -rf "$SCRIPT_DIR/$PROJECT_DIR"
 
 echo "CI/CD pipeline completed successfully!"
